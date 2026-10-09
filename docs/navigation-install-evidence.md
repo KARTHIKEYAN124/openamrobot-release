@@ -70,7 +70,8 @@ for this change; the earlier run is retained locally.
 
 Full colcon logs, both install tarballs, source ZIPs, and all other raw files
 are retained locally in the final evidence directory and bundled in
-`release-issue5-evidence-20261006.zip` beside the release repository. Compact
+[the complete evidence ZIP](evidence/release-issue5-evidence-20261006.zip) with its
+[SHA-256 checksum](evidence/release-issue5-evidence-20261006.zip.sha256). Compact
 results and logs are prepared for source review; the workflow uploads the
 complete evidence directory on hosted execution.
 
