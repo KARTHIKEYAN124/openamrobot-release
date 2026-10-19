@@ -45,6 +45,24 @@ The SHA inventory and commit provenance are inside each bundle; the external
 The new hosted workflow repeats two independent fetches/builds on Ubuntu 24.04
 and uploads the validated candidate, without publishing a GitHub Release.
 
+## Linux packaging check
+
+Ran the following with the repository mounted at `/work` in the local
+`ros:jazzy-ros-base` image (image ID
+`sha256:c3706ef0a0aa45413c07803cf433602f543b22e45b4855f6fca955c2d8ecc4e8`):
+
+```sh
+python3 -m unittest discover -s tests -v
+python3 scripts/build_release.py --config release-config.rc1.json --input-dir input/rc1 --output-dir dist/linux
+python3 scripts/validate_release.py dist/linux/OpenAMRobot-v2.0.0-rc.1-source.zip
+```
+
+**16 tests, 0 failures**; build and validation exit 0. The Linux build uses
+the verified source cache and verifies 1,841 files. Its bundle has the same
+SHA-256 shown above as both independently fetched Windows builds. This proves
+cross-platform packaging for this candidate; it is not a Linux source fetch
+or ROS package compilation check.
+
 ## Not verified
 
 Full Ubuntu/Jazzy workspace compilation, third-party build-time dependency
