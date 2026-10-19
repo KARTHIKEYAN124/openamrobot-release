@@ -1,0 +1,25 @@
+{
+  "product": {
+    "name": "OpenAMRobot",
+    "version": "2.0.0-rc.1",
+    "status": "candidate snapshot; not release acceptance"
+  },
+  "manifest": "manifests/v2.0.0-rc.1.repos",
+  "manifest_sha256": "fa3bfb59dcede1db2d275945916a57dd52d3ff496f2db344376b7e291edc3658",
+  "sources": {
+    "src/openamrobot-interfaces": "5b9463eaf2b19c9e821f2dba2928686923bfb202af78899706478c0047fdcfa2",
+    "src/openamrobot-comm": "32fce865ecd275c73f2fe2aea5fd29c6fafb52129dbd61af37da4768b7571960",
+    "src/openamrobot-manipulation": "753f0a68211998ac334e9ca5632ad2e4ff500bee43f4840e0e077694effae99b",
+    "src/openamr-platform-sw": "7a3c566b8cd90f84fd155511dadf080dfb904418722408d3fc1e381c412b098a",
+    "src/openamr-upperbody-sw": "2ff6c6c2fda9ab42d1643ffd13e139716a31a49e4d3427759cbc75e33b4654a5",
+    "firmware/openamr-platform-fw": "9b4537d324589a6c09d8a13c8931bb300c17ae8daa4f3ac09a5ea974a92b5951",
+    "firmware/openamr-upperbody-fw": "939487d85a4866d64e0c567498f880fa5664a15567094a0027dd0fe2e0a5ab6b",
+    "hardware/openamr-platform-hw": "f25c98cb2e5c7dc30bf11edf7b3be8574f798c2ce686814e4be8ba8272d5875c",
+    "hardware/openamr-upperbody-hw": "fbd6580dbbde5bac9a1c4f691b8eb538bd9b288927c27212ae4b5b334533cae7",
+    "ui/openamrobot-ui": "a4f382c93b307c75d44a35f43e5752553b1bdbb7ad99b88ef37e3bb259f2b463",
+    "docs/openamrobot-docs": "41d6e12060a75242ff2f2d7e2d0c15b833c8694fd05665da23556915cde5ecd9",
+    "src/sllidar_ros2": "297d58d5f5705b2437375f2625a705c9a640c2531e39fb4b1c65d0612425b8a8",
+    "src/micro_ros_agent": "5bad4a07f540091444130ffcc10eac21248ecdd68a7ed3190b8ef0a07a87a15b",
+    "governance/.github": "bb5480012221be7c8aa91807399bb6c9d5cf114578fa1645f3bf9e89ecfc20c9"
+  }
+}
