@@ -14,3 +14,7 @@ evidence/**/producer-log/
 evidence/**/consumer-log/
 __pycache__/
 evidence/navigation-install-20261006/
+docs/evidence/*.zip
+docs/evidence/*.zip.sha256
+evidence/**/verification-tools/
+evidence/navigation-install/

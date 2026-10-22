@@ -13,14 +13,14 @@ control failed as expected. The 159 generated header/IDL hashes and resolved
 dependency inventories matched between runs.
 
 The release-owned installation manifest records the exact pin and versions.
-A candidate builder configuration carries them into `MANIFEST.json` together
+A navigation-only test builder configuration carries them into `MANIFEST.json` together
 with install-artifact digests and verification evidence. Builder tests reject
 failing evidence and pin/archive/package/contract mismatches; all eight tests
 pass. A separate integration check used the actual validated source archive.
 
 Installation and troubleshooting instructions, exact Docker arguments,
-verification-source snapshots, both full logs, dependency inventories, and
-checksums are prepared in the evidence bundle. See
+verifier source references, full logs, dependency inventories, and
+checksums are retained in workflow artifacts; compact evidence remains in Git. See
 [the evidence index](navigation-install-evidence.md) and
 [installation instructions](navigation-install.md).
 

@@ -3,13 +3,15 @@
   "component": "interfaces",
   "source_repository": "https://github.com/openAMRobot/openamrobot-interfaces.git",
   "source_commit": "fa7c438e33bd807c174fa0747119d7d627faa3bf",
-  "packages": {"openamr_nav_msgs": "0.0.0"},
+  "packages": {
+    "openamr_nav_msgs": "0.0.0"
+  },
   "contract_version": 1,
   "status": "source-install-candidate",
-  "validation_image": "ros@sha256:c3706ef0a0aa45413c07803cf433602f543b22e45b4855f6fca955c2d8ecc4e8",
+  "validation_image": "ros:jazzy-ros-base@sha256:066420e07f60aa18262f2479981def87ebcfcec42eefb0c0c57c4a46098348ca",
   "platform": "linux/amd64",
   "ros_distribution": "jazzy",
-  "evidence_path": "evidence/navigation-install-20261006-final/result.json",
+  "evidence_path": "evidence/navigation-install/result.json",
   "workflow_run_url": null,
   "published_release_url": null
 }

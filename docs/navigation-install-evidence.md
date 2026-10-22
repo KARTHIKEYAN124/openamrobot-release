@@ -46,8 +46,8 @@ git diff --check
 ```
 
 The workflow YAML was parsed with PyYAML. No hosted Actions run is claimed.
-The validation runner's exact Docker arguments and shell-source snapshot are
-included in the evidence below. An earlier run in
+The validation runner's exact Docker arguments are included below. Verifier
+sources are referenced at their recorded Git commit rather than copied. An earlier run in
 `evidence/navigation-install-20261006` also passed, but mounted the producer
 artifact directory read-only. The final run tightened this to the install
 tarball alone and saved the verifier sources. Final evidence is authoritative
@@ -68,22 +68,24 @@ for this change; the earlier run is retained locally.
 - [Resolved consumer dependencies](../evidence/navigation-install-20261006-final/first/consumer/dependencies.txt)
 - [Install and troubleshooting instructions](navigation-install.md)
 
-Full colcon logs, both install tarballs, source ZIPs, and all other raw files
-are retained locally in the final evidence directory and bundled in
-[the complete evidence ZIP](evidence/release-issue5-evidence-20261006.zip) with its
-[SHA-256 checksum](evidence/release-issue5-evidence-20261006.zip.sha256). Compact
-results and logs are prepared for source review; the workflow uploads the
-complete evidence directory on hosted execution.
+Full colcon logs, install tarballs and source ZIPs belong in the
+`navigation-pinned-install-evidence` workflow artifact. The full ZIP formerly
+under `docs/evidence/` has been removed from Git. The compact checksum index
+now covers only the retained Git evidence files, including
+[verifier provenance](../evidence/navigation-install-20261006-final/verification-source.json).
+Historical tools can be read from
+[scripts/nav-install at f44f69e](https://github.com/openAMRobot/openamrobot-release/tree/f44f69e1b580a2ee3db4709082e69be62261feca/scripts/nav-install).
+Original outcome logs and the recorded October 6 image remain historical;
+the October 22 review rerun uses the current shared CI base digest.
 
 ## Scope and remaining review
 
 This proves the pinned navigation **source install** and installed-package
 consumption. It does not publish a binary package or certify whole-product
-readiness, semantic interoperability, or hardware safety. The candidate
-release configuration still needs other component pins and current product
-metadata before a full product build. The historical v0.0.1 configuration and
+readiness, semantic interoperability, or hardware safety. The navigation-only test configuration does not select a product release;
+rc.1 source selection belongs to PR #12. The historical v0.0.1 configuration and
 earlier evidence are preserved.
 
-The navigation CI workflow is prepared but has not been pushed or run on
-GitHub. Reviewer acceptance and issue closure remain pending; no GitHub
-comment, merge, tag or release was performed.
+The October 6 run above is local evidence. Hosted workflow results and
+the October 22 review rerun are reported in the PR description; this record
+does not claim a new hosted pass. No merge, tag or release is performed.

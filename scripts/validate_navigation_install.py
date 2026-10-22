@@ -17,11 +17,27 @@ def digest(path):
         return hashlib.file_digest(stream, 'sha256').hexdigest()
 
 
+def verification_source(root):
+    """Reference the verifier in Git without duplicating it in evidence."""
+    commit = subprocess.check_output(['git', '-C', str(root), 'rev-parse', 'HEAD'], text=True).strip()
+    dirty = bool(subprocess.check_output(
+        ['git', '-C', str(root), 'status', '--porcelain', '--untracked-files=no'], text=True).strip())
+    paths = [root / 'scripts/validate_navigation_install.py']
+    paths += sorted(path for path in (root / 'scripts/nav-install').rglob('*')
+                    if path.is_file() and '__pycache__' not in path.parts)
+    return {
+        'repository': 'https://github.com/openAMRobot/openamrobot-release',
+        'commit': commit, 'working_tree_modified': dirty,
+        'files': {path.relative_to(root).as_posix(): digest(path) for path in paths},
+    }
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--manifest', type=Path, default=Path('navigation-install-manifest.json'))
     parser.add_argument('--evidence', required=True, type=Path)
     args = parser.parse_args()
+    provenance = verification_source(Path(__file__).resolve().parents[1])
     manifest = json.loads(args.manifest.read_text())
     revision = manifest['source_commit']
     if len(revision) != 40 or any(c not in '0123456789abcdef' for c in revision):
@@ -38,8 +54,10 @@ def main():
         'workflow_run_url': (f"{os.environ.get('GITHUB_SERVER_URL', 'https://github.com')}/{os.environ['GITHUB_REPOSITORY']}/actions/runs/{os.environ['GITHUB_RUN_ID']}"
                              if os.environ.get('GITHUB_REPOSITORY') and os.environ.get('GITHUB_RUN_ID') else None),
         'runs': [],
+        'verification_source': provenance,
     }
     shutil.copyfile(args.manifest, evidence / 'manifest.json')
+    (evidence / 'verification-source.json').write_text(json.dumps(provenance, indent=2) + '\n')
     commands = []
 
     def run(command, log):
@@ -54,8 +72,6 @@ def main():
         with tempfile.TemporaryDirectory(prefix='openamrobot-nav-checks-') as temporary:
             checks = Path(temporary) / 'checks'
             shutil.copytree(Path(__file__).parent / 'nav-install', checks)
-            shutil.copytree(checks, evidence / 'verification-tools')
-            shutil.copyfile(__file__, evidence / 'verification-tools/validate_navigation_install.py')
             for attempt in ('first', 'second'):
                 folder = evidence / attempt
                 producer = folder / 'producer'
