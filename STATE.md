@@ -9,10 +9,16 @@ build and validation entry points and preserves workspace checkout paths.
 Source archive checksums use canonical, uncompressed ZIPs produced from verified
 Git commits. Output ZIP metadata and ordering are deterministic.
 
-Overlaps: PR #9 adds navigation installation validation to the legacy builder;
-PR #8 documents the release model. Their changes are not adopted or superseded
-by this work. The release-local snapshot will need alignment with the OA-39
-manifest after its review. OA-06 driver installation is a separate work item.
+Integrated main at `c39eda7` on 2026-10-24 after PR #9 merged navigation
+installation validation and PR #8 merged the release model. The existing
+navigation gate, test configuration, source provenance and compact evidence
+remain intact. The archive-input builder still rejects navigation evidence,
+archive, pin, package-version and contract mismatches.
+
+The original candidate source pins are unchanged by the rebase. Repinning to
+the accepted interfaces contract/package version and final rc.1 component
+selection remain separate release work. The release-local snapshot still
+requires owner alignment with the workspace release manifest.
 
 No safety implementation is changed. Source bundling does not validate package
 builds, firmware, robot operation, physical safety or release readiness.

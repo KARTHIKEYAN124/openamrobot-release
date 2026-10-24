@@ -82,3 +82,32 @@ Prepared with OpenAI Codex: implementation, candidate lock, tests, workflow
 and documentation. No safety logic or third-party source was authored or
 modified. Third-party source and licence notices remain in their exports;
 tooling dependency and upstream licences are described in RC1_RELEASE.md.
+
+## Rebase validation, 2026-10-24
+
+Rebased onto main `c39eda70d8cf2e4f98ae09a51afc3a0750350a11` after navigation gate PR #9
+merged as `0c9442fff722ce56567ebc106dc6ca38afcb9e3d` and release-model PR #8
+merged. Pre-rebase head: `58ce4a24e6a1b9619332a59f44217fb1fd55c70b`.
+The original source pins and source checksum lock are unchanged.
+
+```sh
+python -m unittest discover -s tests -v
+python scripts/build_release.py --config release-config.rc1.json --input-dir input/rc1 --output-dir dist/rebase-20261024
+python scripts/validate_release.py dist/rebase-20261024/OpenAMRobot-v2.0.0-rc.1-source.zip
+```
+
+**27 tests, zero failures**, including all 11 merged navigation gate/config/
+provenance tests and 16 pinned-release tests. The real-source build from the
+existing verified cache exits 0 and verifies 1,841 files. Its SHA-256 remains
+`2f87bf21a99add7fb3aa37b2965943c4ac6fa390054476b5ea5293f6500fed41`.
+No fresh network source fetch or physical/ROS package build is claimed by
+this cached packaging run.
+
+Conflict resolution retains main's evidence byte-preservation attributes,
+archive ignores and release-model documentation. The merged navigation
+manifest, navigation-only config, verifier scripts, workflow and compact
+evidence are unchanged relative to main. Only rc.1 dispatch is added to the
+archive-input builder; its navigation validation remains intact.
+
+Fresh hosted check results on the new head are reported in PR #12. This rebase
+is not a new rc.1 interfaces/package-version repin or final release selection.
