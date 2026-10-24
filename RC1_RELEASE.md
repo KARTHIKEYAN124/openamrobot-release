@@ -30,7 +30,9 @@ Missing cache entries or any checksum mismatch fail the build.
 
 Source ZIPs are normalized before hashing: fixed date, sorted files, stored
 compression, normalized executable/link modes and the exact commit as ZIP
-comment. The final ZIP uses the same fixed metadata, retains symlinks as links,
+comment. Git export explicitly sets `core.autocrlf=false` and `core.eol=lf`
+so host line-ending defaults cannot change source bytes; repository attributes
+still apply. The final ZIP uses the same fixed metadata, retains symlinks as links,
 and contains no wall-clock build timestamp or machine-specific paths.
 Submodules fail explicitly until represented by separate pinned entries.
 

@@ -1,6 +1,7 @@
 """Offline fault injection and reproducibility tests for rc.1 packaging."""
 import io
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -69,6 +70,17 @@ class PinnedReleaseTests(unittest.TestCase):
                 archive.writestr(item, b'same bytes')
             variants.append(builder.canonical_source(stream.getvalue()))
         self.assertEqual(*variants)
+
+    def test_source_hash_ignores_git_line_ending_defaults(self):
+        revision = subprocess.check_output(['git', '-C', str(ROOT), 'rev-parse', 'HEAD'], text=True).strip()
+        entry = {'url': str(ROOT), 'version': revision}
+        hashes = []
+        for autocrlf in ('true', 'false'):
+            with patch.dict(os.environ, {'GIT_CONFIG_COUNT': '1',
+                                        'GIT_CONFIG_KEY_0': 'core.autocrlf',
+                                        'GIT_CONFIG_VALUE_0': autocrlf}):
+                hashes.append(builder.digest(builder.source_archive(entry)))
+        self.assertEqual(hashes[0], hashes[1])
 
     def test_executable_and_symlink_modes_preserved(self):
         data = io.BytesIO()

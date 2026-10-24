@@ -20,6 +20,12 @@ the accepted interfaces contract/package version and final rc.1 component
 selection remain separate release work. The release-local snapshot still
 requires owner alignment with the workspace release manifest.
 
+Fresh Linux CI exposed host-dependent Git archive line endings in the old
+Windows-generated source lock. Export now fixes autocrlf/eol settings; the
+source lock is regenerated from the same SHAs. A regression test checks that
+opposite host autocrlf defaults produce the same source hash. Checksum
+enforcement remains strict; the earlier cached-bundle hash is historical.
+
 No safety implementation is changed. Source bundling does not validate package
 builds, firmware, robot operation, physical safety or release readiness.
 Upstream build-time downloads are not locked by this source bundle.

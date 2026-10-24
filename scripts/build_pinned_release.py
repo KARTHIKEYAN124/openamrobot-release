@@ -61,7 +61,7 @@ def load_manifest(path):
 
 
 def source_archive(entry):
-    # Git archive avoids checkout transformations (autocrlf, timestamps).
+    # Export directly from a verified tree, with conversion settings pinned below.
     # Archive bytes are generated from a verified Git commit, never main.zip.
     with tempfile.TemporaryDirectory() as tmp:
         subprocess.run(['git', 'init', '-q', tmp], check=True)
@@ -72,7 +72,11 @@ def source_archive(entry):
         tree = subprocess.check_output(['git', '-C', tmp, 'ls-tree', '-r', actual], text=True)
         if any(line.startswith('160000 ') for line in tree.splitlines()):
             raise ValueError('submodules need explicit manifest entries')
-        data = subprocess.check_output(['git', '-C', tmp, 'archive', '--format=zip', actual])
+        # Git archive applies checkout line-ending conversion. Pin these
+        # settings so a Windows user's autocrlf does not change source bytes.
+        data = subprocess.check_output([
+            'git', '-C', tmp, '-c', 'core.autocrlf=false', '-c', 'core.eol=lf',
+            'archive', '--format=zip', actual])
         return canonical_source(data)
 
 
@@ -153,7 +157,7 @@ def build(config_path, output, cache, fetch=False):
         if fetch:
             data = source_archive(entry)
             if digest(data) != expected:
-                raise ValueError(f'{name}: source checksum mismatch')
+                raise ValueError(f'{name}: source checksum mismatch: expected {expected}, got {digest(data)}')
             cached.write_bytes(data)
         data = cached.read_bytes()
         if digest(data) != expected:
