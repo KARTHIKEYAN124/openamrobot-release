@@ -34,7 +34,9 @@ Prepared 2026-10-28: pinned-release CI now compares the complete repository
 mapping with openamrobot-manifest main's releases/v2.0.0-rc.1.repos. Only
 governance/.github is exempt; missing files, missing entries and changed URLs
 or SHAs fail. The 19 October source pins and checksums are unchanged.
-This gate requires manifest PRs #17 and #18 to land: #17 alone lacks the two
-driver sources. Locally the #18 snapshot matches all 13 workspace entries;
-the #17 snapshot correctly fails for both missing drivers. Hosted validation
-of this new gate is pending publication and those upstream merges.
+Manifest PR #17 merged at 80161e5 and #18 merged at d9ab9db. The
+workspace main now includes all 13 matching entries, including both drivers.
+The historical #17-only snapshot correctly failed for both missing drivers.
+On 2026-10-30 the old workflow rerun required unavailable repository admin
+rights. This state update triggers fresh PR checks with the source pins,
+source checksums and builder code unchanged; hosted results remain pending.
