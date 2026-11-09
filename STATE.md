@@ -61,3 +61,9 @@ additional MapIdentity generated type (13 navigation messages total). This
 checks installation/serialization, not acceptance of proposed contract #34.
 The stale compatibility snapshot fix is offered to the author in
 skunal3318/openamrobot-interfaces#1; DCO/version/consumer decisions remain open.
+
+2026-11-09 P2 review fix: preflight and installed verifier share one unique
+message inventory. Extras cannot repeat baseline names or contract-2
+SiteConfigStatus. Consumer evidence lists verified names; counts come from
+that checked list. Negative overlap controls and positive MapIdentity control
+pass; 44 local tests pass. Draft and release/contract acceptance gates remain.

@@ -9,8 +9,12 @@ import re
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 import tempfile
 import zipfile
+
+sys.path.insert(0, str(Path(__file__).resolve().parent / 'nav-install'))
+from message_inventory import inventory_names
 
 
 def digest(path):
@@ -50,11 +54,10 @@ def main():
     if not re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+', manifest['packages']['openamr_nav_msgs']):
         parser.error('expected an explicit numeric package version')
     additional = manifest.get('additional_messages', [])
-    if (not isinstance(additional, list)
-            or any(not isinstance(name, str) or not re.fullmatch(r'[A-Z][A-Za-z0-9]*', name)
-                   for name in additional)
-            or len(additional) != len(set(additional))):
-        parser.error('additional_messages must be a list of unique message names')
+    try:
+        names = inventory_names(manifest['contract_version'], additional)
+    except ValueError as error:
+        parser.error(str(error))
     evidence = args.evidence.resolve()
     evidence.mkdir(parents=True, exist_ok=False)
     result = {
@@ -105,13 +108,17 @@ def main():
                               manifest['validation_image'], 'bash', '/checks/consumer.sh', str(manifest['contract_version']),
                               manifest['packages']['openamr_nav_msgs'], ','.join(additional)],
                     consumer / 'validation.log')
+                verified = json.loads((consumer / 'verified-messages.json').read_text(encoding='utf-8'))
+                if verified != list(names):
+                    raise RuntimeError('Verified installed-message inventory differs from preflight')
                 result['runs'].append({
                     'name': attempt, 'status': 'passed',
                     'install_artifact': f'{attempt}/producer/navigation-install.tar.gz',
                     'install_artifact_sha256': digest(producer / 'navigation-install.tar.gz'),
                     'source_archive': f'{attempt}/producer/interfaces-source.zip',
                     'source_archive_sha256': digest(producer / 'interfaces-source.zip'),
-                    'generated_messages_verified': (12 if manifest['contract_version'] == 2 else 11) + len(additional),
+                    'generated_messages_verified': len(verified),
+                    'generated_message_names': verified,
                     'consumer_build_and_run': 'passed',
                     'absent_install_negative_control': 'passed',
                     'producer_source_available_to_consumer': False,
