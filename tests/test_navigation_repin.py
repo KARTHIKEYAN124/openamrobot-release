@@ -41,3 +41,9 @@ class RepinExpectationsTests(unittest.TestCase):
 
     def test_mutable_package_expectation_rejected_before_build(self):
         self.reject('package', 'latest')
+
+    def test_invalid_additional_inventory_rejected_before_build(self):
+        self.reject('additional_messages', ['MapIdentity;exit'])
+
+    def test_duplicate_additional_inventory_rejected_before_build(self):
+        self.reject('additional_messages', ['MapIdentity', 'MapIdentity'])

@@ -11,6 +11,7 @@ NAMES = ('ActiveConstraint', 'DockingStatus', 'LocalizationStatus',
          'SensorStatus')
 if int(os.environ['EXPECTED_CONTRACT']) == 2:
     NAMES += ('SiteConfigStatus',)
+NAMES += tuple(name for name in os.environ.get('EXTRA_MESSAGES', '').split(',') if name)
 assert NavigationStatus.CONTRACT_VERSION == int(os.environ['EXPECTED_CONTRACT'])
 with open('/evidence/interfaces.txt', 'w') as output:
     for name in NAMES:

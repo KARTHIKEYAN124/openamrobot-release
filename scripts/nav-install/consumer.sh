@@ -4,6 +4,7 @@ exec > >(tee /evidence/steps.log) 2>&1
 trap 'code=$?; echo "FAIL: consumer line $LINENO (exit $code)"; exit "$code"' ERR
 export EXPECTED_CONTRACT=$1
 expected_package_version=$2
+export EXTRA_MESSAGES=${3:-}
 source /opt/ros/jazzy/setup.bash
 apt-get update
 apt-get install -y --no-install-recommends build-essential python3-colcon-common-extensions ros-jazzy-rclcpp ros-jazzy-rclpy ros-jazzy-std-msgs ros-jazzy-rosidl-default-runtime

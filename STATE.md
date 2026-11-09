@@ -55,3 +55,9 @@ requested changes. Local Docker is unavailable; hosted checks supply builds.
 0.0.0; DCO still needs author action and no release-version approval is
 recorded. Upperbody #14 merged at 41ff4ea; full Gate A acceptance remains
 required before the separate four-component pin refresh.
+
+2026-11-09: test-only fixture targets fbb7b3f and explicitly checks the
+additional MapIdentity generated type (13 navigation messages total). This
+checks installation/serialization, not acceptance of proposed contract #34.
+The stale compatibility snapshot fix is offered to the author in
+skunal3318/openamrobot-interfaces#1; DCO/version/consumer decisions remain open.

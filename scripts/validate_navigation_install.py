@@ -49,6 +49,12 @@ def main():
         parser.error('unsupported contract_version; expected 1 or 2')
     if not re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+', manifest['packages']['openamr_nav_msgs']):
         parser.error('expected an explicit numeric package version')
+    additional = manifest.get('additional_messages', [])
+    if (not isinstance(additional, list)
+            or any(not isinstance(name, str) or not re.fullmatch(r'[A-Z][A-Za-z0-9]*', name)
+                   for name in additional)
+            or len(additional) != len(set(additional))):
+        parser.error('additional_messages must be a list of unique message names')
     evidence = args.evidence.resolve()
     evidence.mkdir(parents=True, exist_ok=False)
     result = {
@@ -97,7 +103,7 @@ def main():
                 run(common + ['--mount', f'type=bind,source={producer / "navigation-install.tar.gz"},target=/artifact/navigation-install.tar.gz,readonly',
                               '--mount', f'type=bind,source={consumer},target=/evidence',
                               manifest['validation_image'], 'bash', '/checks/consumer.sh', str(manifest['contract_version']),
-                              manifest['packages']['openamr_nav_msgs']],
+                              manifest['packages']['openamr_nav_msgs'], ','.join(additional)],
                     consumer / 'validation.log')
                 result['runs'].append({
                     'name': attempt, 'status': 'passed',
@@ -105,7 +111,7 @@ def main():
                     'install_artifact_sha256': digest(producer / 'navigation-install.tar.gz'),
                     'source_archive': f'{attempt}/producer/interfaces-source.zip',
                     'source_archive_sha256': digest(producer / 'interfaces-source.zip'),
-                    'generated_messages_verified': 12 if manifest['contract_version'] == 2 else 11,
+                    'generated_messages_verified': (12 if manifest['contract_version'] == 2 else 11) + len(additional),
                     'consumer_build_and_run': 'passed',
                     'absent_install_negative_control': 'passed',
                     'producer_source_available_to_consumer': False,
